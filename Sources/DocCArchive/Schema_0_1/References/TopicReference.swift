@@ -29,7 +29,8 @@ extension DocCArchive.DocCSchema_0_1 {
     public var abstract       : [ InlineContent ]
     public var navigatorTitle : Block?
     public var estimatedTime  : String?
-    public var url            : URL? // `/documentation/TARGET/TYPE`
+    public var url            : URL?  // `/documentation/TARGET/TYPE`
+    public var deprecated     : Bool?
 
     public var description: String {
       var ms = "<TopicRef[\(identifier)]: "
@@ -45,6 +46,7 @@ extension DocCArchive.DocCSchema_0_1 {
       
       if let v = navigatorTitle   { ms += " #nav-title=\(v.count)"       }
       if let v = fragments        { ms += " #fragments=\(v.count)"       }
+      if let v = deprecated, v    { ms += " deprecated"                  }
 
       ms += ">"
       return ms
