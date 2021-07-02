@@ -7,6 +7,7 @@ Swift package to read and process "DocC" archives,
 a format to document Swift frameworks and packages:
 [Documenting a Swift Framework or Package](https://developer.apple.com/documentation/Xcode/documenting-a-swift-framework-or-package).
 
+Blog entry on the topic: [DocC 📚 Archived and Analyzed](https://www.alwaysrightinstitute.com/docz/).
 
 ### Status
 
@@ -23,7 +24,7 @@ we'll fix missing cases ASAP (PRs are welcome too).
 
 TODO:
 - [ ] Add DocC documentation! 🤦‍♀️
-- [ ] Test with Objective-C documentation.
+- [ ] ~~Test with Objective-C documentation.~~ (looks like ObjC is unsupported by DocC?)
 - [ ] Add a testsuite (existing one not added for sizing concerns).
 
 
