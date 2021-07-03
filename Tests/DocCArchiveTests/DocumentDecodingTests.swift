@@ -10,7 +10,12 @@ import XCTest
 @testable import DocCArchive
 
 final class DocumentDecodingTests: XCTestCase {
-  
+
+  static var allTests = [
+    ( "testSimpleTutorial"            , testSimpleTutorial            ),
+    ( "testAllDataJSONInSlothCreator" , testAllDataJSONInSlothCreator )
+  ]
+
   func testSimpleTutorial() throws {
     let url  = Fixtures.baseURL.appendingPathComponent("SimpleTutorial.json")
     let data = try Data(contentsOf: url)
@@ -51,7 +56,7 @@ final class DocumentDecodingTests: XCTestCase {
     XCTAssertNil  (document.abstract)
   }
 
-  func testParseAllDataJSON() throws {
+  func testAllDataJSONInSlothCreator() throws {
     let dataDir = Fixtures.slothCreatorArchive.appendingPathComponent("data")
     let fm = FileManager.default
     
