@@ -1,0 +1,195 @@
+{
+  "schemaVersion": {
+    "major": 0,
+    "minor": 1,
+    "patch": 0
+  },
+  "sections": [
+    {
+      "content": [
+        {
+          "type": "paragraph",
+          "inlineContent": [
+            {
+              "type": "text",
+              "text": "Blah blub "
+            },
+            {
+              "type": "emphasis",
+              "inlineContent": [
+                {
+                  "type": "text",
+                  "text": "Murks"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " — a dibble dabble."
+            }
+          ]
+        }
+      ],
+      "estimatedTimeInMinutes": 42,
+      "title": "Dummy",
+      "image": "dummy.png",
+      "chapter": "The Chapter",
+      "kind": "hero",
+      "backgroundImage": "dummy.png"
+    },
+    {
+      "kind": "tasks",
+      "tasks": [
+        {
+          "anchor": "the-id",
+          "title": "Creating Something",
+          "contentSection": [
+            {
+              "media": "dummy.png",
+              "kind": "contentAndMedia",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "inlineContent": [
+                    {
+                      "type": "text",
+                      "text": "Do this and that."
+                    }
+                  ]
+                }
+              ],
+              "mediaPosition": "trailing",
+              "layout": "horizontal"
+            }
+          ],
+          "stepsSection": [
+            {
+              "code": null,
+              "content": [
+                {
+                  "type": "paragraph",
+                  "inlineContent": [
+                    {
+                      "type": "text",
+                      "text": "Brabbel."
+                    }
+                  ]
+                }
+              ],
+              "caption": [
+
+              ],
+              "type": "step",
+              "runtimePreview": null,
+              "media": "dummy.png"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "identifier": {
+    "url": "doc://Dummy/tutorials/Dummy/Dummy-Tutorial",
+    "interfaceLanguage": "swift"
+  },
+  "kind": "project",
+  "metadata": {
+    "title": "Creating Dummy Tutorials",
+    "categoryPathComponent": "Dummy",
+    "role": "project",
+    "category": "Dummy"
+  },
+  "hierarchy": {
+    "modules": [
+      {
+        "reference": "doc://Dummy/tutorials/Dummy/Dummy-Tutorial",
+        "projects": [
+        ]
+      }
+    ],
+    "reference": "doc://Dummy/tutorials/Dummy",
+    "paths": [
+      [
+        "doc://Dummy/tutorials/Dummy",
+        "doc://Dummy/tutorials/Dummy/$volume",
+        "doc://Dummy/tutorials/Dummy/Dummy-Tutorial"
+      ]
+    ]
+  },
+  "documentVersion": 0,
+  "references": {
+    "doc://Dummy/tutorials/Dummy/Dummy-Tutorial": {
+      "role": "project",
+      "title": "Dummy Tutorial",
+      "estimatedTime": "42min",
+      "abstract": [
+        {
+          "type": "text",
+          "text": "blah blub "
+        },
+        {
+          "type": "emphasis",
+          "inlineContent": [
+            {
+              "type": "text",
+              "text": "Murks"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " — nada nada."
+        }
+      ],
+      "identifier": "doc://Dummy/tutorials/Dummy/Dummy-Tutorial",
+      "kind": "project",
+      "type": "topic",
+      "url": "/tutorials/slothcreator/creating-custom-sloths"
+    },
+    "doc://Dummy/tutorials/Dummy/Dummy-Tutorial#the-id": {
+      "role": "pseudoSymbol",
+      "title": "Blubs blabs",
+      "abstract": [
+        {
+          "type": "text",
+          "text": "blah blub "
+        },
+        {
+          "type": "emphasis",
+          "inlineContent": [
+            {
+              "type": "text",
+              "text": "Murks"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " — nada nada."
+        }
+      ],
+      "identifier": "doc://Dummy/tutorials/Dummy/Dummy-Tutorial#the-id",
+      "kind": "section",
+      "type": "section",
+      "url": "/tutorials/dummy/dummy-Tutorial#the-id"
+    },
+    "dummy.png": {
+      "alt": "This and that.",
+      "type": "image",
+      "identifier": "dummy.png",
+      "variants": [
+        {
+          "url": "/images/dummy@2x.png",
+          "size": {
+            "width": 1440,
+            "height": 630
+          },
+          "traits": [
+            "2x",
+            "light"
+          ]
+        }
+      ]
+    }
+  }
+}
