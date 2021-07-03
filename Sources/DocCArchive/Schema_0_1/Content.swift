@@ -26,19 +26,19 @@ extension DocCArchive.DocCSchema_0_1 {
       
       // type: "step", assuming there is no other
       
-      let caption        : [ Content ] // often empty
-      let content        : [ Content ]
+      public var caption        : [ Content ] // often empty
+      public var content        : [ Content ]
       
       /// The identifier of the code (covered in the references of the
       /// document).
-      let code           : String?
+      public var code           : String?
       
       /// The identifier of an image (part of the document references).
-      let media          : String?
+      public var media          : String?
       
       /// The identifier of an image showing how the thing would look
       /// at runtime (part of the document references).
-      let runtimePreview : String?
+      public var runtimePreview : String?
     }
 
     case heading    (text: String, anchor: String, level: Int)
