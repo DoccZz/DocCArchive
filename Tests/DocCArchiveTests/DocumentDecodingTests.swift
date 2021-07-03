@@ -54,6 +54,49 @@ final class DocumentDecodingTests: XCTestCase {
     XCTAssertNil  (document.primaryContentSections)
     XCTAssertNil  (document.variants)
     XCTAssertNil  (document.abstract)
+
+    if let section = document.sections.first {
+      XCTAssertEqual(section.title       , "Dummy")
+      XCTAssertEqual(section.identifiers , [])
+      if case .hero(let hero) = section.kind {
+        XCTAssertEqual(hero.estimatedTimeInMinutes , 42)
+        XCTAssertEqual(hero.image                  , "dummy.png")
+        XCTAssertEqual(hero.chapter                , "The Chapter")
+        XCTAssertEqual(hero.backgroundImage        , "dummy.png")
+        XCTAssertEqual(hero.content.count          , 1)
+        XCTAssertNil  (hero.action)
+      }
+      else { XCTAssert(false, "Expected hero as the first section") }
+    }
+    if let section = document.sections.last {
+      XCTAssertNil  (section.title)
+      XCTAssertEqual(section.identifiers,  [])
+      if case .tasks(let tasks) = section.kind {
+        XCTAssertEqual(tasks.count, 1)
+        
+        if let task = tasks.first {
+          XCTAssertEqual(task.anchor , "the-id")
+          XCTAssertEqual(task.title  , "Creating Something")
+          XCTAssertEqual(task.contentSection.count, 1)
+          XCTAssertEqual(task.stepsSection  .count, 1)
+          
+          if case .contentAndMedia(let cm) = task.contentSection.first {
+            XCTAssertEqual(cm.layout        , .horizontal)
+            XCTAssertEqual(cm.media         , "dummy.png")
+            XCTAssertEqual(cm.mediaPosition , .trailing)
+            XCTAssertEqual(cm.content.count , 1)
+          }
+          if case .step(let step) = task.stepsSection.first {
+            XCTAssertNil  (step.code)
+            XCTAssertNil  (step.runtimePreview)
+            XCTAssertEqual(step.content.count, 1)
+            XCTAssertTrue (step.caption.isEmpty)
+            XCTAssertEqual(step.media, "dummy.png")
+          }
+        }
+      }
+      else { XCTAssert(false, "Expected tasks as the last section") }
+    }
   }
 
   func testAllDataJSONInSlothCreator() throws {

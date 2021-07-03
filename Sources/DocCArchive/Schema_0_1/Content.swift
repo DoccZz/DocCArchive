@@ -22,10 +22,30 @@ extension DocCArchive.DocCSchema_0_1 {
       public var code   : [ String ]
     }
 
+    public struct Step: Equatable, Codable {
+      
+      // type: "step", assuming there is no other
+      
+      let caption        : [ Content ] // often empty
+      let content        : [ Content ]
+      
+      /// The identifier of the code (covered in the references of the
+      /// document).
+      let code           : String?
+      
+      /// The identifier of an image (part of the document references).
+      let media          : String?
+      
+      /// The identifier of an image showing how the thing would look
+      /// at runtime (part of the document references).
+      let runtimePreview : String?
+    }
+
     case heading    (text: String, anchor: String, level: Int)
     case aside      (style: Style, content: [ Content ])
     case paragraph  (inlineContent: [ InlineContent ])
     case codeListing(CodeListing)
+    case step       (Step)
 
     // - MARK: Codable
     
@@ -54,6 +74,9 @@ extension DocCArchive.DocCSchema_0_1 {
         case "codeListing":
           let content = try CodeListing(from: decoder)
           self = .codeListing(content)
+        case "step":
+          let content = try Step(from: decoder)
+          self = .step(content)
         default:
           throw DocCArchiveLoadingError.unsupportedContentType(type)
       }
@@ -77,6 +100,9 @@ extension DocCArchive.DocCSchema_0_1 {
           try container.encode(content       , forKey: .inlineContent)
         case .codeListing(let content):
           try container.encode("codeListing" , forKey: .type)
+          try content.encode(to: encoder)
+        case .step(let content):
+          try container.encode("step"        , forKey: .type)
           try content.encode(to: encoder)
       }
     }

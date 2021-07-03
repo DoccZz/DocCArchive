@@ -11,6 +11,9 @@ extension DocCArchive.DocCSchema_0_1.Section {
   /**
    * A task is one section in a tutorial.
    *
+   * It has a title, an anchor (the html element id),
+   * content and steps.
+   *
    * E.g. in SlothCreator:
    *
    *   Section 1
@@ -66,12 +69,15 @@ extension DocCArchive.DocCSchema_0_1.Section {
         }
       }
     }
-
+    
     public var title          : String
     public var anchor         : String
+    
+    // This does not seem to be a regular `Content`, because it has a `kind`
+    // instead of a `type`.
     public var contentSection : [ TaskContent ]
     
-    // TODO:
-    // - stepsSection
+    // So far seen `step` and `paragraph` content in this.
+    public var stepsSection   : [ DocCArchive.DocCSchema_0_1.Content ]
   }
 }
