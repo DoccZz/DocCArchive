@@ -18,8 +18,15 @@ extension DocCArchive.DocCSchema_0_1 {
       public var description: String { return rawValue }
     }
     public struct Hierarchy: Equatable, Codable, CustomStringConvertible {
+      
+      public struct Module: Equatable, Codable {
+        public var reference : Identifier
+        // public var projects: [ ?? ]
+      }
+      
       public var paths     : [ [ String ] ]
       public var reference : String?
+      public var modules   : [ Module ]?
       
       public var description: String {
         var ms = "<Hierarchy:"
@@ -27,6 +34,11 @@ extension DocCArchive.DocCSchema_0_1 {
         else if paths == [ [] ] { ms += " empty-level1" }
         else { ms += " \(paths)" }
         if let s = reference { ms += " ref\(s)" }
+
+        if let modules = modules, !modules.isEmpty {
+          ms += " modules=" + modules.map({ $0.reference.url.absoluteString })
+                              .joined(separator: ",")
+        }
         ms += ">"
         return ms
       }
