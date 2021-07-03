@@ -81,7 +81,7 @@ public struct DocCArchive {
       self.documentationURL = nil
     }
 
-    let tutorialsURL = dataURL.appendingPathComponent("tutorialsURL")
+    let tutorialsURL = dataURL.appendingPathComponent("tutorials")
     if fm.fileExists(atPath: tutorialsURL.path, isDirectory: &isDir),
        isDir.boolValue
     {
@@ -215,4 +215,6 @@ public enum DocCArchiveLoadingError: Swift.Error {
   case unsupportedFragmentKind     (String)
   case unsupportedMetaDataRole     (String)
   case unsupportedRole             (String)
+  case unsupportedTaskContent      (String)
+  case expectedStep                (String)
 }

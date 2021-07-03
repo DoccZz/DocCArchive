@@ -24,9 +24,12 @@ extension DocCArchive.DocCSchema_0_1.Section {
                  : [ DocCArchive.DocCSchema_0_1.InlineContent ]
     }
     
-    public var image           : String // type that out?
-    public var backgroundImage : String
-    public var content         : [ DocCArchive.DocCSchema_0_1.Content ]
-    public var action          : Action?
+    public var image                  : String // type that out?
+    public var backgroundImage        : String
+    public var content                : [ DocCArchive.DocCSchema_0_1.Content ]
+    public var action                 : Action?
+    
+    public var estimatedTimeInMinutes : Int?
+    public var chapter                : String?
   }
 }
