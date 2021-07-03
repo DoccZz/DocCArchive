@@ -81,7 +81,7 @@ public struct DocCArchive {
       self.documentationURL = nil
     }
 
-    let tutorialsURL = dataURL.appendingPathComponent("tutorialsURL")
+    let tutorialsURL = dataURL.appendingPathComponent("tutorials")
     if fm.fileExists(atPath: tutorialsURL.path, isDirectory: &isDir),
        isDir.boolValue
     {
