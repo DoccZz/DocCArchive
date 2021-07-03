@@ -18,12 +18,60 @@ extension DocCArchive.DocCSchema_0_1.Section {
    *
    */
   public struct Task: Equatable, Codable {
+    
+    public struct ContentAndMedia: Equatable, Codable {
+      
+      public enum Layout: String, Equatable, Codable {
+        case horizontal
+      }
+      public enum Position: String, Equatable, Codable {
+        case trailing
+      }
+      
+      public var layout        : Layout
+      public var mediaPosition : Position
+      public var media         : String // 01-creating-section1.png
+      public var content       : [ DocCArchive.DocCSchema_0_1.Content ]
+    }
+    
+    public enum TaskContent: Equatable, Codable {
+      
+      case contentAndMedia(ContentAndMedia)
 
-    public var title     : String
-    public var anchor    : String
+      // - MARK: Codable
+      
+      private enum CodingKeys: String, CodingKey {
+        case kind
+      }
+      
+      public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let kind      = try container.decode(String.self, forKey: .kind)
+        
+        switch kind {
+          case "contentAndMedia":
+            self = .contentAndMedia(try .init(from: decoder))
+          default:
+            throw DocCArchiveLoadingError.unsupportedTaskContent(kind)
+        }
+      }
+
+      public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        switch self {
+          case .contentAndMedia(let value):
+            try container.encode("contentAndMedia" , forKey: .kind)
+            try value.encode(to: encoder)
+        }
+      }
+    }
+
+    public var title          : String
+    public var anchor         : String
+    public var contentSection : [ TaskContent ]
     
     // TODO:
-    // - contentSection
     // - stepsSection
   }
 }

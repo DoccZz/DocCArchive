@@ -215,4 +215,6 @@ public enum DocCArchiveLoadingError: Swift.Error {
   case unsupportedFragmentKind     (String)
   case unsupportedMetaDataRole     (String)
   case unsupportedRole             (String)
+  case unsupportedTaskContent      (String)
+  case expectedStep                (String)
 }
