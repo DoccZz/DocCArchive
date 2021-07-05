@@ -194,6 +194,47 @@ public struct DocCArchive {
     let data = try Data(contentsOf: url)
     return try JSONDecoder().decode(DocCArchive.Document.self, from: data)
   }
+
+  public func fetchDataFolderPathes() -> Set<String> {
+    // In the tests this seems to take about 10secs, no idea why? Doesn't matter
+    // whether I replace FM w/ straight Posix.
+    // Almost like someone forgot a debug `sleep(10)`.
+    var pathes = Set<String>()
+    pathes.reserveCapacity(100)
+    
+    guard let de = fm.enumerator(at: dataURL,
+                                 includingPropertiesForKeys: [.isDirectoryKey],
+                                 options: [ .skipsHiddenFiles ])
+    else {
+      return []
+    }
+
+    let basePath = dataURL.path
+    for item in de {
+      guard let url = item as? URL else {
+        assert(item is URL, "Got non-URL item from directory enumeration")
+        continue
+      }
+      
+      let isDir = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?
+                    .isDirectory ?? false
+      guard isDir else { continue }
+      
+      guard url.path.hasPrefix(basePath) else {
+        assert(url.path.hasPrefix(basePath))
+        continue
+      }
+      
+      let relPath = url.path.dropFirst(basePath.count)
+      assert(!relPath.isEmpty)
+      assert(!pathes.contains(String(relPath)))
+      assert(relPath.hasPrefix("/"))
+      pathes.insert(String(relPath))
+    }
+    
+    return pathes
+  }
+  
 }
 
 public extension DocCArchive {

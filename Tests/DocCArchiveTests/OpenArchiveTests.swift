@@ -20,4 +20,16 @@ final class OpenArchiveTests: XCTestCase {
       try DocCArchive(contentsOf: URL(fileURLWithPath: "/tmp/missing.txt"))
     )
   }
+
+  func testSubfoldersInSlothCreator() throws {
+    let fm = FileManager.default
+    try XCTSkipUnless(fm.fileExists(atPath: Fixtures.slothCreatorArchive.path),
+                      "This test needs the SlothCreator.doccarchive in the " +
+                      "~/Downloads directory")
+
+    let archive = try DocCArchive(contentsOf: Fixtures.slothCreatorArchive)
+
+    let pathes = archive.fetchDataFolderPathes().sorted()
+    XCTAssertEqual(pathes.first, "/documentation")
+  }
 }
