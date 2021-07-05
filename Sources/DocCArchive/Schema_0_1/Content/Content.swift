@@ -11,34 +11,10 @@ extension DocCArchive.DocCSchema_0_1 {
   /**
    * Content in a ``Section`` or a ``Chapter``.
    */
-  public enum Content: Equatable, Codable {
+  public enum Content: Equatable, CustomStringConvertible, Codable {
     
     public enum Style: String, Codable {
       case note
-    }
-
-    public struct CodeListing: Equatable, Codable {
-      public var syntax : String
-      public var code   : [ String ]
-    }
-
-    public struct Step: Equatable, Codable {
-      
-      // type: "step", assuming there is no other
-      
-      public var caption        : [ Content ] // often empty
-      public var content        : [ Content ]
-      
-      /// The identifier of the code (covered in the references of the
-      /// document).
-      public var code           : String?
-      
-      /// The identifier of an image (part of the document references).
-      public var media          : String?
-      
-      /// The identifier of an image showing how the thing would look
-      /// at runtime (part of the document references).
-      public var runtimePreview : String?
     }
 
     case heading    (text: String, anchor: String, level: Int)
@@ -46,6 +22,21 @@ extension DocCArchive.DocCSchema_0_1 {
     case paragraph  (inlineContent: [ InlineContent ])
     case codeListing(CodeListing)
     case step       (Step)
+    
+    public var description: String {
+      switch self {
+        case .heading    (let text, let anchor, let level):
+          var ms = "<h\(level)"
+          if !anchor.isEmpty { ms += " #\(anchor)" }
+          if !text  .isEmpty { ms += " “\(text)”"  }
+          return ms + ">"
+        case .aside      (let style, let content):
+          return "<aside[\(style)]: \(content)>"
+        case .paragraph  (let inlineContent) : return "<p>\(inlineContent)</p>"
+        case .codeListing(let code)          : return code.description
+        case .step       (let step)          : return step.description
+      }
+    }
 
     // - MARK: Codable
     

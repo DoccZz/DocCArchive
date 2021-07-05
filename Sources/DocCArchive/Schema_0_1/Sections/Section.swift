@@ -12,9 +12,9 @@ extension DocCArchive.DocCSchema_0_1 {
     case conformsTo
   }
   
-  public struct Section: Equatable, Codable {
+  public struct Section: Equatable, CustomStringConvertible, Codable {
 
-    public enum Kind: Equatable {
+    public enum Kind: Equatable, CustomStringConvertible {
       case generic
       case relationships(RelationshipType)
       case declarations ([ Declaration ])
@@ -23,6 +23,19 @@ extension DocCArchive.DocCSchema_0_1 {
       case volume       (Volume)
       case parameters   ([ Parameter ])
       case tasks        ([ Task      ])
+
+      public var description: String {
+        switch self {
+          case .generic: return "generic"
+          case .relationships(let type)    : return "relship=\(type)"
+          case .declarations (let decls)   : return "\(decls)"
+          case .content      (let content) : return "\(content)"
+          case .hero         (let hero)    : return "\(hero)"
+          case .volume       (let volume)  : return "\(volume)"
+          case .parameters   (let params)  : return "\(params)"
+          case .tasks        (let tasks)   : return "\(tasks)"
+        }
+      }
     }
     
     public var kind        : Kind
@@ -32,7 +45,23 @@ extension DocCArchive.DocCSchema_0_1 {
     public var identifiers : [ Identifier ]
     public var generated   = true
     
-    
+
+    public var description: String {
+      var ms = identifiers.isEmpty ? "<Section:" : "<Section[\(identifiers)]:"
+      if let s = title { ms += " “\(s)”" }
+      
+      switch kind {
+        case .generic: break
+        case .relationships, .declarations, .content, .hero, .volume,
+             .parameters, .tasks:
+          ms += " \(kind)"
+      }
+
+      if generated { ms += " generated" }
+      ms += ">"
+      return ms
+    }
+
     // - MARK: Codable
 
     private enum CodingKeys: String, CodingKey {

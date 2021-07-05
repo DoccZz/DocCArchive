@@ -78,13 +78,13 @@ extension DocCArchive.DocCSchema_0_1 {
     public var references             : [ String : Reference ]
 
     public var description: String {
-      var ms = "<Document: "
-      ms += " schemaVersion=\(schemaVersion)"
+      var ms = "<Document:"
+      ms += " schema=\(schemaVersion)"
       ms += " identifier=\(identifier)"
-      ms += " documentVersion=\(documentVersion)"
-      ms += " kind=\(kind)"
-      ms += " metadata=\(metadata)"
-      ms += " hierarchy=\(hierarchy)"
+      ms += " version=\(documentVersion)"
+      ms += " \(kind)"
+      ms += " \(metadata)"
+      ms += " \(hierarchy)"
 
       if let v = variants        { ms += " #variants=\(v.count)"         }
       if let v = abstract        { ms += " #abstract=\(v.count)"         }
