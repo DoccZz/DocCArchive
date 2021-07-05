@@ -20,9 +20,9 @@ extension DocCArchive.DocCSchema_0_1.Section {
    *   Create a new project and add SlothCreator
    *
    */
-  public struct Task: Equatable, Codable {
+  public struct Task: Equatable, CustomStringConvertible, Codable {
     
-    public struct ContentAndMedia: Equatable, Codable {
+    public struct ContentAndMedia: Equatable, CustomStringConvertible, Codable {
       
       public enum Layout: String, Equatable, Codable {
         case horizontal
@@ -35,11 +35,25 @@ extension DocCArchive.DocCSchema_0_1.Section {
       public var mediaPosition : Position
       public var media         : String // 01-creating-section1.png
       public var content       : [ DocCArchive.DocCSchema_0_1.Content ]
+    
+      public var description: String {
+        var ms = "<C&M: \(media)"
+        if content.isEmpty { ms += " empty" }
+        else { ms += " \(content)" }
+        ms += ">"
+        return ms
+      }
     }
     
-    public enum TaskContent: Equatable, Codable {
+    public enum TaskContent: Equatable, CustomStringConvertible, Codable {
       
       case contentAndMedia(ContentAndMedia)
+    
+      public var description: String {
+        switch self {
+          case .contentAndMedia(let v): return v.description
+        }
+      }
 
       // - MARK: Codable
       
@@ -79,5 +93,17 @@ extension DocCArchive.DocCSchema_0_1.Section {
     
     // So far seen `step` and `paragraph` content in this.
     public var stepsSection   : [ DocCArchive.DocCSchema_0_1.Content ]
+
+    public var description: String {
+      var ms = "<Task"
+      if anchor.isEmpty { ms += ":" }
+      else              { ms += "[\(anchor)]:" }
+      if !title.isEmpty { ms += " “\(title)”" }
+      
+      if !contentSection.isEmpty { ms += " #content=\(contentSection)" }
+      if !stepsSection  .isEmpty { ms += " #steps=\(stepsSection)"     }
+      ms += ">"
+      return ms
+    }
   }
 }

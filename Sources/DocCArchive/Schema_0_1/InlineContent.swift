@@ -8,7 +8,7 @@
 
 extension DocCArchive.DocCSchema_0_1 {
   
-  public enum InlineContent: Equatable, Codable {
+  public enum InlineContent: Equatable, CustomStringConvertible, Codable {
     // TBD: Fragment vs InlineContent
     // Fragments have a 'kind', InlineContent has a 'type'
 
@@ -17,6 +17,17 @@ extension DocCArchive.DocCSchema_0_1 {
     case image    (identifier: String)
     case emphasis ([ InlineContent ])
     case codeVoice(code: String)
+    
+    public var description: String {
+      switch self {
+        case .text     (let s)       :  return "“\(s)”"
+        case .reference(let id, let isActive):
+          return "\(id)\(isActive ? "" : "-inactive")"
+        case .image    (let id)      : return "<img \(id)>"
+        case .emphasis (let content) : return "*\(content)*"
+        case .codeVoice(let code)    : return "`\(code)`"
+      }
+    }
 
     // - MARK: Codable
     
