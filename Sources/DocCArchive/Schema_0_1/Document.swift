@@ -64,7 +64,7 @@ extension DocCArchive.DocCSchema_0_1 {
     
     public var schemaVersion          : SchemaVersion
     public var identifier             : Identifier
-    public var documentVersion        : Int
+    public var documentVersion        : Int?
     public var kind                   : Kind
     public var metadata               : MetaData
     public var hierarchy              : Hierarchy
@@ -81,7 +81,7 @@ extension DocCArchive.DocCSchema_0_1 {
       var ms = "<Document:"
       ms += " schema=\(schemaVersion)"
       ms += " identifier=\(identifier)"
-      ms += " version=\(documentVersion)"
+      if let v = documentVersion { ms += " version=\(v)" }
       ms += " \(kind)"
       ms += " \(metadata)"
       ms += " \(hierarchy)"

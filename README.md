@@ -11,12 +11,11 @@ Blog entry on the topic: [DocC 📚 Archived and Analyzed](https://www.alwaysrig
 
 ### Status
 
-2021-07-02: The module can import all documents created in the
+The module can import all documents created in the
 [SlothCreator](https://developer.apple.com/documentation/xcode/slothcreator_building_docc_documentation_in_xcode)
 example.
 
-It should be pretty complete, but specifically lacks testing with Objective-C
-documentation.
+It should be pretty complete.
 
 If you find an issue (usually signalled by an assertion or fatalError),
 please [*let us know*](https://github.com/DoccZz/DocCArchive/issues),
@@ -24,8 +23,7 @@ we'll fix missing cases ASAP (PRs are welcome too).
 
 TODO:
 - [ ] Add DocC documentation! 🤦‍♀️
-- [ ] ~~Test with Objective-C documentation.~~ (looks like ObjC is unsupported by DocC?)
-- [ ] Add a testsuite (existing one not added for sizing concerns).
+- [x] Add a testsuite (existing one not added for sizing concerns).
 
 
 ### Usage in a Swift Package
