@@ -165,4 +165,53 @@ final class DocumentDecodingTests: XCTestCase {
 
     print("# passing tests:", testCount)
   }
+
+
+  func testAllDataJSONInIssue7() throws {
+    let dataDir = Fixtures.issue7Archive.appendingPathComponent("data")
+    let fm = FileManager.default
+    
+    try XCTSkipUnless(fm.fileExists(atPath: dataDir.path),
+                      "This test needs the LLabsWishlist.doccarchive in the " +
+                      "~/Downloads directory")
+    
+    guard let de = fm.enumerator(atPath: dataDir.path) else {
+      XCTAssert(false, "did not get dir enum"); return
+    }
+    
+    var testCount = 0
+    print("Parse files:")
+    for p in de {
+      guard let path = p as? String else {
+        XCTAssert(false, "expected path"); return
+      }
+      guard !path.contains(".git")            else { continue }
+      guard path.hasSuffix(".json")           else { continue }
+
+      var url: URL {
+        dataDir.appendingPathComponent(path)
+      }
+
+      let data = try Data(contentsOf: url)
+
+      print("Parse:", path)
+      let document : DocCArchive.Document
+      do {
+        document =
+          try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+        testCount += 1
+      }
+      catch {
+        print("ERROR:", error)
+        XCTAssert(false, "failed to decode: \(error)")
+        return
+      }
+
+      XCTAssertEqual(document.schemaVersion,
+                     .init(major: 0, minor: 1, patch: 0))
+      XCTAssertNil  (document.documentVersion)
+    }
+
+    print("# passing tests:", testCount)
+  }
 }

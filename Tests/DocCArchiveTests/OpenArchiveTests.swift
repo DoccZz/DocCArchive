@@ -32,4 +32,16 @@ final class OpenArchiveTests: XCTestCase {
     let pathes = archive.fetchDataFolderPathes().sorted()
     XCTAssertEqual(pathes.first, "/documentation")
   }
+
+  func testIssue7() throws {
+    let fm = FileManager.default
+    try XCTSkipUnless(fm.fileExists(atPath: Fixtures.issue7Archive.path),
+                      "This test needs the LLabsWishlist.doccarchive in the " +
+                      "~/Downloads directory")
+
+    let archive = try DocCArchive(contentsOf: Fixtures.issue7Archive)
+
+    let pathes = archive.fetchDataFolderPathes().sorted()
+    XCTAssertEqual(pathes.first, "/documentation")
+  }
 }
