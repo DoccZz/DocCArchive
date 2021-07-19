@@ -65,7 +65,7 @@ extension DocCArchive.DocCSchema_0_1 {
   
   public enum SymbolKind: String, Codable, CustomStringConvertible {
     case `struct`, `module`, method, `init`, property, `enum`, `case`, op
-    case `protocol`, `class`
+    case `protocol`, `class`, `typealias`
     
     public var description: String { return rawValue }
   }
@@ -83,7 +83,7 @@ extension DocCArchive.DocCSchema_0_1 {
     case article          = "Article"
     case `protocol`       = "Protocol"
     case typeProperty     = "Type Property"
-    case alias            = "Alias"
+    case `typealias`      = "Type Alias"
     case `class`          = "Class"
 
     public var description: String { return "<RoleHeading: \(rawValue)>" }
