@@ -30,6 +30,31 @@ final class DocumentDecodingTests: XCTestCase {
     print("Decoding:", url.path)
     do {
       document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+      
+      guard let section = document.primaryContentSections?.first else {
+        XCTAssert(false, "did not find primary content section"); return
+      }
+      guard case .content(let contents) = section.kind else {
+        XCTAssert(false, "did not find content section"); return
+      }
+      guard case .unorderedList(let list) = contents.dropFirst().first else {
+        XCTAssert(false, "did not find list"); return
+      }
+      XCTAssertEqual(list.count, 2)
+      guard case .paragraph(let inlineContent) = list.last?.content.first else {
+        XCTAssert(false, "did not find paragraph"); return
+      }
+      XCTAssertEqual(inlineContent.count, 2)
+      guard case .reference(let id, let isActive, let ot, let otc) =
+                    inlineContent.last else
+      {
+        XCTAssert(false, "did not find reference"); return
+      }
+      XCTAssertTrue(isActive)
+      XCTAssertEqual(id, DocCArchive.DocCSchema_0_1.Identifier(
+                           url: URL(string: "https://github.com/3Qax")!))
+      XCTAssertEqual(ot         , "@3Qax")
+      XCTAssertEqual(otc?.count , 1)
     }
     catch {
       print("ERROR:", error)
