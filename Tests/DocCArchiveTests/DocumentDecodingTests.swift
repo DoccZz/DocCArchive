@@ -17,6 +17,24 @@ final class DocumentDecodingTests: XCTestCase {
     ( "testAllDataJSONInSlothCreator" , testAllDataJSONInSlothCreator )
   ]
   
+  func testIssue9FailAttributeFragment() throws {
+    let url  = Fixtures.baseURL.appendingPathComponent("Issue9Fail.json")
+    let data = try Data(contentsOf: url)
+    
+    let document : DocCArchive.Document
+    
+    print("Decoding:", url.path)
+    do {
+      document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+    }
+    catch {
+      print("ERROR:", error)
+      XCTAssert(false, "failed to decode: \(error)")
+      return
+    }
+    XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
+  }
+
   func testIssue7Fail() throws {
     let url  = Fixtures.baseURL.appendingPathComponent("Issue7Fail.json")
     let data = try Data(contentsOf: url)

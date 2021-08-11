@@ -1,0 +1,33 @@
+{
+  "primaryContentSections": [
+    {
+      "kind": "declarations",
+      "declarations": [
+        {
+          "tokens": [
+            {
+              "kind": "attribute",
+              "text": "@IBInspectable"
+            }
+          ],
+          "languages":["swift"], "platforms":["macOS"]
+        }
+      ]
+    }
+  ],
+  "schemaVersion":{"major":0,"minor":1,"patch":0},
+  "identifier":{
+    "url":"doc://ARI/documentation/Fail9",
+    "interfaceLanguage":"swift"
+  },
+  "kind":"symbol",
+  "metadata": {
+    "title": "And then she kissed her",
+    "categoryPathComponent": "Songs",
+    "role": "project",
+    "category": "Songs"
+  },
+  "hierarchy":{ "paths":[] },
+  "sections":[],
+  "references":{}
+}

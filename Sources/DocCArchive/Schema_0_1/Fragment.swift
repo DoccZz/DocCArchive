@@ -30,6 +30,9 @@ extension DocCArchive.DocCSchema_0_1 {
     // A generic parameter is the `T` in `Array<T>` (string w/o the `<>`)
     case genericParameter(String)
     
+    /// An attribute, like `@IBInspectable`
+    case attribute(String)
+    
     // Those carry identifier/preciseIdentifier within declarations, but not in
     // fragments (e.g. as part of references).
     case typeIdentifier  (text: String, identifier: Identifier?,
@@ -44,6 +47,7 @@ extension DocCArchive.DocCSchema_0_1 {
         case .externalParam    (let s)       : return s
         case .internalParam    (let s)       : return s
         case .genericParameter (let s)       : return s
+        case .attribute        (let s)       : return s
         case .typeIdentifier   (let s, _, _) : return s
       }
     }
@@ -56,6 +60,7 @@ extension DocCArchive.DocCSchema_0_1 {
         case .externalParam    (let s): return "<ExtPara: \(s)>"
         case .internalParam    (let s): return "<IntPara: \(s)>"
         case .genericParameter (let s): return "<GPara: \(s)>"
+        case .attribute        (let s): return "<Attr: \(s)>"
 
         case .typeIdentifier   (let text, .some(let id), .some(let tid)):
           return "<TypeIdentifier[\(id)]: “\(text)” \(tid)>"
@@ -89,7 +94,8 @@ extension DocCArchive.DocCSchema_0_1 {
         case "externalParam"    : self = .externalParam   (try text())
         case "internalParam"    : self = .internalParam   (try text())
         case "genericParameter" : self = .genericParameter(try text())
-          
+        case "attribute"        : self = .attribute       (try text())
+
         case "typeIdentifier":
           let id  = try container.decodeIfPresent(
                           Identifier.self, forKey: .identifier)
@@ -109,7 +115,7 @@ extension DocCArchive.DocCSchema_0_1 {
       switch self {
         case .keyword(let v), .text(let v), .identifier(let v),
              .externalParam(let v), .internalParam(let v),
-             .genericParameter(let v):
+             .genericParameter(let v), .attribute(let v):
           try container.encode(v, forKey: .text)
           
         case .typeIdentifier(let text, let id, let tid):
@@ -128,6 +134,7 @@ extension DocCArchive.DocCSchema_0_1 {
         case .internalParam    : return "internalParam"
         case .genericParameter : return "genericParameter"
         case .typeIdentifier   : return "typeIdentifier"
+        case .attribute        : return "attribute"
       }
     }
   }
