@@ -1,0 +1,87 @@
+{
+  "primaryContentSections": [],
+  "schemaVersion": {
+    "major": 0,
+    "minor": 1,
+    "patch": 0
+  },
+  "metadata": {
+    "fragments": [
+      {
+        "kind": "keyword",
+        "text": "class"
+      },
+      {
+        "kind": "text",
+        "text": " "
+      },
+      {
+        "kind": "keyword",
+        "text": "func"
+      },
+      {
+        "kind": "text",
+        "text": " "
+      },
+      {
+        "kind": "identifier",
+        "text": "getValue"
+      },
+      {
+        "kind": "text",
+        "text": "("
+      },
+      {
+        "kind": "externalParam",
+        "text": "key"
+      },
+      {
+        "kind": "text",
+        "text": ": "
+      },
+      {
+        "kind": "typeIdentifier",
+        "text": "String",
+        "preciseIdentifier": "s:SS"
+      },
+      {
+        "kind": "text",
+        "text": "?) -> "
+      },
+      {
+        "kind": "typeIdentifier",
+        "text": "UIColor",
+        "preciseIdentifier": "c:objc(cs)UIColor"
+      },
+      {
+        "kind": "text",
+        "text": "?"
+      }
+    ],
+    "title": "getValue(key:)",
+    "roleHeading": "Type Method",
+    "role": "symbol",
+    "symbolKind": "method",
+    "externalID": "[reducted]",
+    "modules": [
+      {
+        "name": "[reducted]"
+      }
+    ]
+  },
+  "schemaVersion":{"major":0,"minor":1,"patch":0},
+  "identifier":{
+    "url":"doc://ARI/documentation/Fail9",
+    "interfaceLanguage":"swift"
+  },
+  "kind":"symbol",
+  "metadata": {
+    "title": "And then she kissed her",
+    "categoryPathComponent": "Songs",
+    "role": "project",
+    "category": "Songs"
+  },
+  "hierarchy":{ "paths":[] },
+  "sections":[],
+  "references":{}
+}

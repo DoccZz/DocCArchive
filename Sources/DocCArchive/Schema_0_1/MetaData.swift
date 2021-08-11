@@ -75,6 +75,7 @@ extension DocCArchive.DocCSchema_0_1 {
     case structure        = "Structure"
     case framework        = "Framework"
     case instanceMethod   = "Instance Method"
+    case typeMethod       = "Type Method"
     case initializer      = "Initializer"
     case instanceProperty = "Instance Property"
     case enumeration      = "Enumeration"
