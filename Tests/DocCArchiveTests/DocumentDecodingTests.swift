@@ -12,10 +12,32 @@ import XCTest
 final class DocumentDecodingTests: XCTestCase {
 
   static var allTests = [
-    ( "testSimpleTutorial"            , testSimpleTutorial            ),
-    ( "testIssue7Fail"                , testIssue7Fail                ),
-    ( "testAllDataJSONInSlothCreator" , testAllDataJSONInSlothCreator )
+    ( "testSimpleTutorial"              , testSimpleTutorial              ),
+    ( "testIssue7Fail"                  , testIssue7Fail                  ),
+    ( "testIssue9FailAttributeFragment" , testIssue9FailAttributeFragment ),
+    ( "testIssue10FailTypeMethodRoleHeading",
+      testIssue10FailTypeMethodRoleHeading ),
+    ( "testIssue11FailUnorderedList"    , testIssue11FailUnorderedList    ),
+    ( "testAllDataJSONInSlothCreator"   , testAllDataJSONInSlothCreator   )
   ]
+  
+  func testIssue11FailUnorderedList() throws {
+    let url  = Fixtures.baseURL.appendingPathComponent("Issue11Fail.json")
+    let data = try Data(contentsOf: url)
+    
+    let document : DocCArchive.Document
+    
+    print("Decoding:", url.path)
+    do {
+      document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+    }
+    catch {
+      print("ERROR:", error)
+      XCTAssert(false, "failed to decode: \(error)")
+      return
+    }
+    XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
+  }
   
   func testIssue10FailTypeMethodRoleHeading() throws {
     let url  = Fixtures.baseURL.appendingPathComponent("Issue10Fail.json")
