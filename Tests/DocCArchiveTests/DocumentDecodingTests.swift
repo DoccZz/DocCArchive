@@ -12,10 +12,57 @@ import XCTest
 final class DocumentDecodingTests: XCTestCase {
 
   static var allTests = [
-    ( "testSimpleTutorial"            , testSimpleTutorial            ),
-    ( "testIssue7Fail"                , testIssue7Fail                ),
-    ( "testAllDataJSONInSlothCreator" , testAllDataJSONInSlothCreator )
+    ( "testSimpleTutorial"              , testSimpleTutorial              ),
+    ( "testIssue7Fail"                  , testIssue7Fail                  ),
+    ( "testIssue9FailAttributeFragment" , testIssue9FailAttributeFragment ),
+    ( "testIssue10FailTypeMethodRoleHeading",
+      testIssue10FailTypeMethodRoleHeading ),
+    ( "testIssue11FailUnorderedList"    , testIssue11FailUnorderedList    ),
+    ( "testAllDataJSONInSlothCreator"   , testAllDataJSONInSlothCreator   )
   ]
+  
+  func testIssue11FailUnorderedList() throws {
+    let url  = Fixtures.baseURL.appendingPathComponent("Issue11Fail.json")
+    let data = try Data(contentsOf: url)
+    
+    let document : DocCArchive.Document
+    
+    print("Decoding:", url.path)
+    do {
+      document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+      
+      guard let section = document.primaryContentSections?.first else {
+        XCTAssert(false, "did not find primary content section"); return
+      }
+      guard case .content(let contents) = section.kind else {
+        XCTAssert(false, "did not find content section"); return
+      }
+      guard case .unorderedList(let list) = contents.dropFirst().first else {
+        XCTAssert(false, "did not find list"); return
+      }
+      XCTAssertEqual(list.count, 2)
+      guard case .paragraph(let inlineContent) = list.last?.content.first else {
+        XCTAssert(false, "did not find paragraph"); return
+      }
+      XCTAssertEqual(inlineContent.count, 2)
+      guard case .reference(let id, let isActive, let ot, let otc) =
+                    inlineContent.last else
+      {
+        XCTAssert(false, "did not find reference"); return
+      }
+      XCTAssertTrue(isActive)
+      XCTAssertEqual(id, DocCArchive.DocCSchema_0_1.Identifier(
+                           url: URL(string: "https://github.com/3Qax")!))
+      XCTAssertEqual(ot         , "@3Qax")
+      XCTAssertEqual(otc?.count , 1)
+    }
+    catch {
+      print("ERROR:", error)
+      XCTAssert(false, "failed to decode: \(error)")
+      return
+    }
+    XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
+  }
   
   func testIssue10FailTypeMethodRoleHeading() throws {
     let url  = Fixtures.baseURL.appendingPathComponent("Issue10Fail.json")

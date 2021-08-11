@@ -1,0 +1,59 @@
+{
+  "primaryContentSections": [
+    {
+      "kind": "content",
+      "content": [
+        { "anchor": "Added", "level": 3, "type": "heading", "text": "Added" },
+        {
+          "type": "unorderedList",
+          "items": [
+            {
+              "content": [
+                {
+                  "type": "paragraph",
+                  "inlineContent": [
+                    { "type": "text", "text": "Counter component " },
+                    { "type": "reference", "isActive": true,
+                      "identifier": "https://github.com/3Qax" }
+                  ]
+                }
+              ]
+            },
+            {
+              "content": [
+                {
+                  "type": "paragraph",
+                  "inlineContent": [
+                    { "type": "text", "text": "Changelog.md" },
+                    { "type": "reference", "isActive": true,
+                      "identifier": "https://github.com/3Qax",
+                      "overridingTitle": "@3Qax",
+                      "overridingTitleInlineContent": [
+                        { "type": "text", "text": "@3Qax" }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaVersion":{"major":0,"minor":1,"patch":0},
+  "identifier":{
+    "url":"doc://ARI/documentation/Fail9",
+    "interfaceLanguage":"swift"
+  },
+  "kind":"symbol",
+  "metadata": {
+    "title": "And then she kissed her",
+    "categoryPathComponent": "Songs",
+    "role": "project",
+    "category": "Songs"
+  },
+  "hierarchy":{ "paths":[] },
+  "sections":[],
+  "references":{}
+}
