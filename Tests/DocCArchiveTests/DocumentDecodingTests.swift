@@ -18,9 +18,40 @@ final class DocumentDecodingTests: XCTestCase {
     ( "testIssue10FailTypeMethodRoleHeading",
       testIssue10FailTypeMethodRoleHeading ),
     ( "testIssue11FailUnorderedList"    , testIssue11FailUnorderedList    ),
-    ( "testAllDataJSONInSlothCreator"   , testAllDataJSONInSlothCreator   )
+    ( "testAllDataJSONInSlothCreator"   , testAllDataJSONInSlothCreator   ),
+    ( "testIssue12FailAsideWarningStyle", testIssue12FailAsideWarningStyle )
   ]
-  
+
+  func testIssue12FailAsideWarningStyle() throws {
+    let url  = Fixtures.baseURL.appendingPathComponent("Issue12Fail.json")
+    let data = try Data(contentsOf: url)
+
+    let document : DocCArchive.Document
+
+    print("Decoding:", url.path)
+    do {
+      document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+
+      guard let section = document.primaryContentSections?.first else {
+        XCTAssert(false, "did not find primary content section"); return
+      }
+      guard case .content(let contents) = section.kind else {
+        XCTAssert(false, "did not find content section"); return
+      }
+      guard case .aside(style: let style, content: let asideContents) = contents.dropFirst().first else {
+        XCTAssert(false, "did not find aside"); return
+      }
+      XCTAssertEqual(style, .warning, "expected to find warning")
+      XCTAssert(asideContents.count == 1)
+    }
+    catch {
+      print("ERROR:", error)
+      XCTAssert(false, "failed to decode: \(error)")
+      return
+    }
+    XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
+  }
+
   func testIssue11FailUnorderedList() throws {
     let url  = Fixtures.baseURL.appendingPathComponent("Issue11Fail.json")
     let data = try Data(contentsOf: url)
