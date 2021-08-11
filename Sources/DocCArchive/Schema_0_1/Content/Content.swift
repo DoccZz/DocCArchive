@@ -16,13 +16,19 @@ extension DocCArchive.DocCSchema_0_1 {
     public enum Style: String, Codable {
       case note
     }
-
-    case heading    (text: String, anchor: String, level: Int)
-    case aside      (style: Style, content: [ Content ])
-    case paragraph  (inlineContent: [ InlineContent ])
-    case codeListing(CodeListing)
-    case step       (Step)
     
+    public struct Item: Equatable, Codable {
+      public var content : [ Content ]
+    }
+
+    case heading      (text: String, anchor: String, level: Int)
+    case aside        (style: Style, content: [ Content ])
+    case paragraph    (inlineContent: [ InlineContent ])
+    case codeListing  (CodeListing)
+    case step         (Step)
+    case orderedList  ([ Item ])
+    case unorderedList([ Item ])
+
     public var description: String {
       switch self {
         case .heading    (let text, let anchor, let level):
@@ -32,16 +38,18 @@ extension DocCArchive.DocCSchema_0_1 {
           return ms + ">"
         case .aside      (let style, let content):
           return "<aside[\(style)]: \(content)>"
-        case .paragraph  (let inlineContent) : return "<p>\(inlineContent)</p>"
-        case .codeListing(let code)          : return code.description
-        case .step       (let step)          : return step.description
+        case .orderedList  (let items)    : return "<ol>\(items)</ol>"
+        case .unorderedList(let items)    : return "<ul>\(items)</ul>"
+        case .paragraph    (let icontent) : return "<p>\(icontent)</p>"
+        case .codeListing  (let code)     : return code.description
+        case .step         (let step)     : return step.description
       }
     }
 
     // - MARK: Codable
     
     private enum CodingKeys: String, CodingKey {
-      case content, anchor, level, type, text, style, inlineContent
+      case content, anchor, level, type, text, style, inlineContent, items
     }
     
     public init(from decoder: Decoder) throws {
@@ -58,6 +66,12 @@ extension DocCArchive.DocCSchema_0_1 {
           let style   = try container.decode(Style.self     , forKey: .style)
           let content = try container.decode([Content].self , forKey: .content)
           self = .aside(style: style, content: content)
+        case "orderedList":
+          let content = try container.decode([ Item ].self, forKey: .items)
+          self = .orderedList(content)
+        case "unorderedList":
+          let content = try container.decode([ Item ].self, forKey: .items)
+          self = .unorderedList(content)
         case "paragraph":
           let content = try container.decode([ InlineContent ].self ,
                                              forKey: .inlineContent)
@@ -78,22 +92,28 @@ extension DocCArchive.DocCSchema_0_1 {
       
       switch self {
         case .heading(let text, let anchor, let level):
-          try container.encode("heading" , forKey: .type)
-          try container.encode(text      , forKey: .text)
-          try container.encode(anchor    , forKey: .anchor)
-          try container.encode(level     , forKey: .level)
+          try container.encode("heading"       , forKey: .type)
+          try container.encode(text            , forKey: .text)
+          try container.encode(anchor          , forKey: .anchor)
+          try container.encode(level           , forKey: .level)
         case .aside(let style, let content):
-          try container.encode("aside"       , forKey: .type)
-          try container.encode(style         , forKey: .style)
-          try container.encode(content       , forKey: .content)
+          try container.encode("aside"         , forKey: .type)
+          try container.encode(style           , forKey: .style)
+          try container.encode(content         , forKey: .content)
+        case .unorderedList(let items):
+          try container.encode("unorderedList" , forKey: .type)
+          try container.encode(items           , forKey: .items)
+        case .orderedList(let items):
+          try container.encode("orderedList"   , forKey: .type)
+          try container.encode(items           , forKey: .items)
         case .paragraph(let content):
-          try container.encode("paragraph"   , forKey: .type)
-          try container.encode(content       , forKey: .inlineContent)
+          try container.encode("paragraph"     , forKey: .type)
+          try container.encode(content         , forKey: .inlineContent)
         case .codeListing(let content):
-          try container.encode("codeListing" , forKey: .type)
+          try container.encode("codeListing"   , forKey: .type)
           try content.encode(to: encoder)
         case .step(let content):
-          try container.encode("step"        , forKey: .type)
+          try container.encode("step"          , forKey: .type)
           try content.encode(to: encoder)
       }
     }

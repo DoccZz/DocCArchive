@@ -13,7 +13,9 @@ extension DocCArchive.DocCSchema_0_1 {
     // Fragments have a 'kind', InlineContent has a 'type'
 
     case text     (String)
-    case reference(identifier: Identifier, isActive: Bool)
+    case reference(identifier: Identifier, isActive: Bool,
+                   overridingTitle              : String?,
+                   overridingTitleInlineContent : [ InlineContent ]?)
     case image    (identifier: String)
     case emphasis ([ InlineContent ])
     case codeVoice(code: String)
@@ -21,7 +23,7 @@ extension DocCArchive.DocCSchema_0_1 {
     public var description: String {
       switch self {
         case .text     (let s)       :  return "“\(s)”"
-        case .reference(let id, let isActive):
+        case .reference(let id, let isActive, _, _):
           return "\(id)\(isActive ? "" : "-inactive")"
         case .image    (let id)      : return "<img \(id)>"
         case .emphasis (let content) : return "*\(content)*"
@@ -33,6 +35,7 @@ extension DocCArchive.DocCSchema_0_1 {
     
     private enum CodingKeys: String, CodingKey {
       case type, text, identifier, isActive, inlineContent, code
+      case overridingTitle, overridingTitleInlineContent
     }
     
     public init(from decoder: Decoder) throws {
@@ -57,7 +60,14 @@ extension DocCArchive.DocCSchema_0_1 {
               try container.decode(Identifier.self, forKey: .identifier),
             isActive:
               try container.decodeIfPresent(Bool.self, forKey: .isActive)
-              ?? true
+              ?? true,
+            overridingTitle:
+              try container
+                    .decodeIfPresent(String.self, forKey: .overridingTitle),
+            overridingTitleInlineContent:
+              try container
+                    .decodeIfPresent([ InlineContent ].self,
+                                     forKey: .overridingTitleInlineContent)
           )
         default:
           throw DocCArchiveLoadingError.unsupportedInlineContentType(kind)
@@ -80,10 +90,14 @@ extension DocCArchive.DocCSchema_0_1 {
         case .emphasis(let content):
           try container.encode("emphasis"  , forKey: .type)
           try container.encode(content     , forKey: .inlineContent)
-        case .reference(let identifier, let isActive):
+        case .reference(let identifier, let isActive, let ot, let otc):
           try container.encode("reference" , forKey: .type)
           try container.encode(identifier  , forKey: .identifier)
           try container.encode(isActive    , forKey: .isActive)
+          if let v = ot  { try container.encode(v , forKey: .overridingTitle) }
+          if let v = otc {
+            try container.encode(v, forKey: .overridingTitleInlineContent)
+          }
       }
     }
   }
