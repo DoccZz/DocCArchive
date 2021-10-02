@@ -15,6 +15,10 @@ extension DocCArchive.DocCSchema_0_1 {
     
     public enum Style: String, Codable {
       case note
+      case warning
+      case important
+      case tip
+      case experiment
     }
     
     public struct Item: Equatable, Codable {
