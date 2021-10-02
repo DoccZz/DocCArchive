@@ -9,12 +9,14 @@
 extension DocCArchive.DocCSchema_0_1.Content {
 
   public struct CodeListing: Equatable, CustomStringConvertible, Codable {
-    public var syntax : String
+    public var syntax : String?
     public var code   : [ String ]
     
     public var description: String {
-      return syntax.isEmpty ? "<Code #\(code.count)>"
-                            : "<Code[\(syntax)]: #\(code.count)>"
+        guard let syntax = syntax, !syntax.isEmpty else {
+            return "<Code #\(code.count)>"
+        }
+        return "<Code[\(syntax)]: #\(code.count)>"
     }
   }
 }
