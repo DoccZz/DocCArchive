@@ -28,7 +28,7 @@ extension DocCArchive.DocCSchema_0_1 {
           return "\(id)\(isActive ? "" : "-inactive")"
         case .image    (let id)      : return "<img \(id)>"
         case .emphasis (let content) : return "*\(content)*"
-        case .strong (let content)   : return "**\(content)**"
+        case .strong   (let content) : return "**\(content)**"
         case .codeVoice(let code)    : return "`\(code)`"
       }
     }
