@@ -64,7 +64,7 @@ extension DocCArchive.DocCSchema_0_1 {
     
     public var schemaVersion          : SchemaVersion
     public var identifier             : Identifier
-    public var documentVersion        : Int?
+    public var documentVersion        : Int? // was 0, not set in 13.2.1
     public var kind                   : Kind
     public var metadata               : MetaData
     public var hierarchy              : Hierarchy

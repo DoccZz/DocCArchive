@@ -27,9 +27,9 @@ extension DocCArchive.DocCSchema_0_1 {
       }
       
       public var url    : String // it's a path, not a URL
-      public var size   : Size
+      public var size   : Size?  // size is gone in 13.2.1 as per Issue 5
       public var traits : [ Trait ] // TBD: make Set?
-      
+
       func numberOfMatches(against requestedTraits: Set<Trait>) -> Int {
         var matchCount = 0
         for trait in requestedTraits {
@@ -39,7 +39,9 @@ extension DocCArchive.DocCSchema_0_1 {
       }
 
       public var description: String {
-        var ms = "<Variant: \(size) traits="
+        var ms = "<Variant:"
+        if let size = size { ms += " \(size)" }
+        ms += " traits="
         ms += traits.map({ $0.rawValue }).joined(separator: ",")
         ms += " " + url
         ms += ">"
