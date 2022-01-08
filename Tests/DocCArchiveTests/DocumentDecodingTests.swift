@@ -33,20 +33,20 @@ final class DocumentDecodingTests: XCTestCase {
       document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
 
       guard let section = document.primaryContentSections?.first else {
-        XCTAssert(false, "did not find primary content section"); return
+        XCTFail("did not find primary content section"); return
       }
       guard case .content(let contents) = section.kind else {
-        XCTAssert(false, "did not find content section"); return
+        XCTFail("did not find content section"); return
       }
       guard case .aside(style: let style, content: let asideContents) = contents.dropFirst().first else {
-        XCTAssert(false, "did not find aside"); return
+        XCTFail("did not find aside"); return
       }
       XCTAssertEqual(style, .warning, "expected to find warning")
       XCTAssert(asideContents.count == 1)
     }
     catch {
       print("ERROR:", error)
-      XCTAssert(false, "failed to decode: \(error)")
+      XCTFail("failed to decode: \(error)")
       return
     }
     XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
@@ -63,23 +63,23 @@ final class DocumentDecodingTests: XCTestCase {
       document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
       
       guard let section = document.primaryContentSections?.first else {
-        XCTAssert(false, "did not find primary content section"); return
+        XCTFail("did not find primary content section"); return
       }
       guard case .content(let contents) = section.kind else {
-        XCTAssert(false, "did not find content section"); return
+        XCTFail("did not find content section"); return
       }
       guard case .unorderedList(let list) = contents.dropFirst().first else {
-        XCTAssert(false, "did not find list"); return
+        XCTFail("did not find list"); return
       }
       XCTAssertEqual(list.count, 2)
       guard case .paragraph(let inlineContent) = list.last?.content.first else {
-        XCTAssert(false, "did not find paragraph"); return
+        XCTFail("did not find paragraph"); return
       }
       XCTAssertEqual(inlineContent.count, 2)
       guard case .reference(let id, let isActive, let ot, let otc) =
                     inlineContent.last else
       {
-        XCTAssert(false, "did not find reference"); return
+        XCTFail("did not find reference"); return
       }
       XCTAssertTrue(isActive)
       XCTAssertEqual(id, DocCArchive.DocCSchema_0_1.Identifier(
@@ -89,7 +89,7 @@ final class DocumentDecodingTests: XCTestCase {
     }
     catch {
       print("ERROR:", error)
-      XCTAssert(false, "failed to decode: \(error)")
+      XCTFail("failed to decode: \(error)")
       return
     }
     XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
@@ -107,7 +107,7 @@ final class DocumentDecodingTests: XCTestCase {
     }
     catch {
       print("ERROR:", error)
-      XCTAssert(false, "failed to decode: \(error)")
+      XCTFail("failed to decode: \(error)")
       return
     }
     XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
@@ -125,7 +125,7 @@ final class DocumentDecodingTests: XCTestCase {
     }
     catch {
       print("ERROR:", error)
-      XCTAssert(false, "failed to decode: \(error)")
+      XCTFail("failed to decode: \(error)")
       return
     }
     XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
@@ -143,7 +143,7 @@ final class DocumentDecodingTests: XCTestCase {
     }
     catch {
       print("ERROR:", error)
-      XCTAssert(false, "failed to decode: \(error)")
+      XCTFail("failed to decode: \(error)")
       return
     }
     XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
@@ -161,7 +161,7 @@ final class DocumentDecodingTests: XCTestCase {
     }
     catch {
       print("ERROR:", error)
-      XCTAssert(false, "failed to decode: \(error)")
+      XCTFail("failed to decode: \(error)")
       return
     }
     
@@ -199,7 +199,7 @@ final class DocumentDecodingTests: XCTestCase {
         XCTAssertEqual(hero.content.count          , 1)
         XCTAssertNil  (hero.action)
       }
-      else { XCTAssert(false, "Expected hero as the first section") }
+      else { XCTFail("Expected hero as the first section") }
     }
     if let section = document.sections.last {
       XCTAssertNil  (section.title)
@@ -228,7 +228,7 @@ final class DocumentDecodingTests: XCTestCase {
           }
         }
       }
-      else { XCTAssert(false, "Expected tasks as the last section") }
+      else { XCTFail("Expected tasks as the last section") }
     }
   }
 
@@ -241,14 +241,14 @@ final class DocumentDecodingTests: XCTestCase {
                       "~/Downloads directory")
     
     guard let de = fm.enumerator(atPath: dataDir.path) else {
-      XCTAssert(false, "did not get dir enum"); return
+      XCTFail("did not get dir enum"); return
     }
     
     var testCount = 0
     print("Parse files:")
     for p in de {
       guard let path = p as? String else {
-        XCTAssert(false, "expected path"); return
+        XCTFail("expected path"); return
       }
       guard !path.contains(".git")            else { continue }
       guard path.hasSuffix(".json")           else { continue }
@@ -293,14 +293,14 @@ final class DocumentDecodingTests: XCTestCase {
                       "~/Downloads directory")
     
     guard let de = fm.enumerator(atPath: dataDir.path) else {
-      XCTAssert(false, "did not get dir enum"); return
+      XCTFail("did not get dir enum"); return
     }
     
     var testCount = 0
     print("Parse files:")
     for p in de {
       guard let path = p as? String else {
-        XCTAssert(false, "expected path"); return
+        XCTFail("expected path"); return
       }
       guard !path.contains(".git")            else { continue }
       guard path.hasSuffix(".json")           else { continue }
@@ -320,7 +320,7 @@ final class DocumentDecodingTests: XCTestCase {
       }
       catch {
         print("ERROR:", error)
-        XCTAssert(false, "failed to decode: \(error)")
+        XCTFail("failed to decode: \(error)")
         return
       }
 
