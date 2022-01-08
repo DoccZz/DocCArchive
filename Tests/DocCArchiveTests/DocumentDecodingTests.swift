@@ -268,7 +268,7 @@ final class DocumentDecodingTests: XCTestCase {
       }
       catch {
         print("ERROR:", error)
-        XCTAssert(false, "failed to decode: \(error)")
+        XCTFail("failed to decode: \(error)")
         return
       }
 
