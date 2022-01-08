@@ -274,7 +274,10 @@ final class DocumentDecodingTests: XCTestCase {
 
       XCTAssertEqual(document.schemaVersion,
                      .init(major: 0, minor: 1, patch: 0))
-      XCTAssertEqual(document.documentVersion, 0)
+      
+      // was 0, not set in 13.2.1
+      XCTAssert(document.documentVersion == 0 ||
+                document.documentVersion == nil)
     }
 
     print("# passing tests:", testCount)
