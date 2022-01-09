@@ -3,7 +3,7 @@
 //  DocCArchive
 //
 //  Created by Helge Heß.
-//  Copyright © 2021 ZeeZide GmbH. All rights reserved.
+//  Copyright © 2021-2022 ZeeZide GmbH. All rights reserved.
 //
 
 extension DocCArchive.DocCSchema_0_1 {
@@ -12,9 +12,22 @@ extension DocCArchive.DocCSchema_0_1 {
     case conformsTo
   }
   
+  /**
+   * A `Section` within for example the `primaryContentSections`.
+   *
+   * For example a `struct` documentation might begin with
+   * ``Kind-swift.enum/declarations(_:)``
+   * and then carry custom content in a
+   * ``Kind-swift.enum/content(_:)``
+   * section.
+   *
+   * Don't confuse the actual ``Content`` with a (`"kind": "content"`) section
+   * (which carries an array of ``Content`` values).
+   */
   public struct Section: Equatable, CustomStringConvertible, Codable {
 
     public enum Kind: Equatable, CustomStringConvertible {
+      
       case generic
       case relationships(RelationshipType)
       case declarations ([ Declaration ])
