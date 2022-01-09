@@ -3,7 +3,7 @@
 //  DocCArchiveTests
 //
 //  Created by Helge Heß.
-//  Copyright © 2021 ZeeZide GmbH. All rights reserved.
+//  Copyright © 2021-2022 ZeeZide GmbH. All rights reserved.
 //
 
 import XCTest
@@ -12,15 +12,48 @@ import XCTest
 final class DocumentDecodingTests: XCTestCase {
 
   static var allTests = [
-    ( "testSimpleTutorial"              , testSimpleTutorial              ),
-    ( "testIssue7Fail"                  , testIssue7Fail                  ),
-    ( "testIssue9FailAttributeFragment" , testIssue9FailAttributeFragment ),
+    ( "testSimpleTutorial"               , testSimpleTutorial               ),
+    ( "testIssue7Fail"                   , testIssue7Fail                   ),
+    ( "testIssue9FailAttributeFragment"  , testIssue9FailAttributeFragment  ),
     ( "testIssue10FailTypeMethodRoleHeading",
       testIssue10FailTypeMethodRoleHeading ),
-    ( "testIssue11FailUnorderedList"    , testIssue11FailUnorderedList    ),
-    ( "testAllDataJSONInSlothCreator"   , testAllDataJSONInSlothCreator   ),
-    ( "testIssue12FailAsideWarningStyle", testIssue12FailAsideWarningStyle )
+    ( "testIssue11FailUnorderedList"     , testIssue11FailUnorderedList     ),
+    ( "testAllDataJSONInSlothCreator"    , testAllDataJSONInSlothCreator    ),
+    ( "testIssue12FailAsideWarningStyle" , testIssue12FailAsideWarningStyle ),
+    ( "testTableIssue6"                  , testTableIssue6 )
   ]
+  
+  func testTableIssue6() throws {
+    let url  = Fixtures.baseURL.appendingPathComponent("TableIssue6.json")
+    let data = try Data(contentsOf: url)
+
+    let document : DocCArchive.Document
+
+    print("Decoding:", url.path)
+    do {
+      document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+      
+      let section = try XCTUnwrap(
+        document.primaryContentSections?.dropFirst().first,
+        "did not find section with table"
+      )
+
+      guard case .content(let contents) = section.kind else {
+        XCTFail("did not find content section"); return
+      }
+      guard case .table(let header, let rows) = contents.dropFirst().first else {
+        XCTFail("did not find table"); return
+      }
+      XCTAssertEqual(header, .row, "expected to find row-type header")
+      XCTAssert(rows.count == 3) // 1 header row, 2 content rows
+    }
+    catch {
+      print("ERROR:", error)
+      XCTFail("failed to decode: \(error)")
+      return
+    }
+    XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
+  }
 
   func testIssue12FailAsideWarningStyle() throws {
     let url  = Fixtures.baseURL.appendingPathComponent("Issue12Fail.json")

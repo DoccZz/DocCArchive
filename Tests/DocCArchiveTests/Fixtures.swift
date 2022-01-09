@@ -3,7 +3,7 @@
 //  DocCArchiveTests
 //
 //  Created by Helge Heß.
-//  Copyright © 2021 ZeeZide GmbH. All rights reserved.
+//  Copyright © 2021-2022 ZeeZide GmbH. All rights reserved.
 //
 
 import Foundation
@@ -13,14 +13,15 @@ enum Fixtures {
   static let baseURL = URL(fileURLWithPath: #filePath)
                          .deletingLastPathComponent()
                          .appendingPathComponent("Fixtures/", isDirectory: true)
-
+  
+  /// Where docc archives for bigger tests are being stored, currently
+  /// in `~/Downloads`.
+  static let testArchivesDir = FileManager.default.homeDirectoryForCurrentUser
+                                 .appendingPathComponent("Downloads")
+  
   static let slothCreatorArchive =
-    FileManager.default.homeDirectoryForCurrentUser
-      .appendingPathComponent("Downloads")
-      .appendingPathComponent("SlothCreator.doccarchive")
+    testArchivesDir.appendingPathComponent("SlothCreator.doccarchive")
 
   static let issue7Archive =
-    FileManager.default.homeDirectoryForCurrentUser
-      .appendingPathComponent("Downloads")
-      .appendingPathComponent("LLabsWishlist.doccarchive")
+    testArchivesDir.appendingPathComponent("LLabsWishlist.doccarchive")
 }
