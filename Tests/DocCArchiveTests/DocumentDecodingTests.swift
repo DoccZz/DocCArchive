@@ -22,6 +22,62 @@ final class DocumentDecodingTests: XCTestCase {
     ( "testIssue12FailAsideWarningStyle" , testIssue12FailAsideWarningStyle ),
     ( "testTableIssue6"                  , testTableIssue6 )
   ]
+
+  func testLinkInlineContentIssue7() throws {
+    let url  = Fixtures.baseURL.appendingPathComponent("LinkInlineContentIssue7.json")
+    let data = try Data(contentsOf: url)
+
+    let document : DocCArchive.Document
+
+    print("Decoding:", url.path)
+    do {
+      document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+
+      let section = try XCTUnwrap(
+        document.primaryContentSections?.dropFirst().first,
+        "did not find section with link inline content"
+      )
+
+      guard case .content(let contents) = section.kind else {
+        XCTFail("did not find content section"); return
+      }
+
+      guard case .paragraph(let inlineContent) = contents.dropFirst().first else {
+        XCTFail("did not find paragraph"); return
+      }
+
+      XCTAssertEqual(inlineContent.count, 2)
+      guard case .reference(let id, let isActive, let ot, let otc) =
+              inlineContent.last else
+              {
+                XCTFail("did not find reference"); return
+              }
+      XCTAssertTrue(isActive)
+      XCTAssertEqual(id, DocCArchive.DocCSchema_0_1.Identifier(
+        url: URL(string: "https://github.com")!))
+
+      let reference = try XCTUnwrap(
+        document.references["https://github.com"],
+        "did not find reference for key"
+      )
+
+      guard case .link(let link) = reference else {
+        XCTFail("did not find link"); return
+      }
+
+      XCTAssertEqual(link.title             , "external url")
+      XCTAssertEqual(link.url.absoluteString, "https://github.com")
+      XCTAssertEqual(link.titleInlineContent, [DocCArchive.DocCSchema_0_1.InlineContent.text("external url")])
+      XCTAssertNil(ot)
+      XCTAssertNil(otc)
+    }
+    catch {
+      print("ERROR:", error)
+      XCTFail("failed to decode: \(error)")
+      return
+    }
+    XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 1, patch: 0))
+  }
   
   func testTableIssue6() throws {
     let url  = Fixtures.baseURL.appendingPathComponent("TableIssue6.json")

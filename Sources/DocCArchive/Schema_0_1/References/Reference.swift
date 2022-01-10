@@ -21,6 +21,7 @@ extension DocCArchive.DocCSchema_0_1 {
     case image       (ImageReference)
     case file        (FileReference)
     case section     (SectionReference)
+    case link        (LinkReference)
     case unresolvable(identifier: String, title: String)
     
     @inlinable
@@ -30,6 +31,7 @@ extension DocCArchive.DocCSchema_0_1 {
         case .image       (let v)     : return v.identifier
         case .file        (let v)     : return v.identifier
         case .section     (let v)     : return v.identifier
+        case .link        (let v)     : return v.identifier
         case .unresolvable(let id, _) : return id
       }
     }
@@ -44,6 +46,7 @@ extension DocCArchive.DocCSchema_0_1 {
         case .image  (let v) : return v.description
         case .file   (let v) : return v.description
         case .section(let v) : return v.description
+        case .link   (let v) : return v.description
         case .unresolvable(let identifier, let title):
           return "<DeadRef[\(identifier)]: “\(title)”>"
       }
@@ -64,6 +67,7 @@ extension DocCArchive.DocCSchema_0_1 {
         case "topic"   : self = .topic  (try TopicReference  (from: decoder))
         case "file"    : self = .file   (try FileReference   (from: decoder))
         case "section" : self = .section(try SectionReference(from: decoder))
+        case "link"    : self = .link   (try LinkReference   (from: decoder))
         case "unresolvable":
           let id = try container.decode(String.self, forKey: .identifier)
           self = .unresolvable(identifier: id, title:
@@ -88,6 +92,9 @@ extension DocCArchive.DocCSchema_0_1 {
           try value.encode(to: encoder)
         case .section(let value):
           try container.encode("section"      , forKey: .type)
+          try value.encode(to: encoder)
+        case .link(let value):
+          try container.encode("link"         , forKey: .type)
           try value.encode(to: encoder)
         case .unresolvable(let id, let value):
           try container.encode(id             , forKey: .identifier)
