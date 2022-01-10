@@ -1,0 +1,246 @@
+{
+  "primaryContentSections": [
+    {
+      "kind": "declarations",
+      "declarations": [
+        {
+          "tokens": [
+            {
+              "kind": "keyword",
+              "text": "struct"
+            },
+            {
+              "kind": "text",
+              "text": " "
+            },
+            {
+              "kind": "identifier",
+              "text": "DocCInlineContentLink"
+            }
+          ],
+          "languages": [
+            "swift"
+          ],
+          "platforms": [
+            "macOS"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "content",
+      "content": [
+        {
+          "anchor": "overview",
+          "level": 2,
+          "type": "heading",
+          "text": "Overview"
+        },
+        {
+          "type": "paragraph",
+          "inlineContent": [
+            {
+              "type": "text",
+              "text": "An "
+            },
+            {
+              "type": "reference",
+              "isActive": true,
+              "identifier": "https://github.com"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaVersion": {
+    "major": 0,
+    "minor": 1,
+    "patch": 0
+  },
+  "sections": [],
+  "variants": [
+    {
+      "paths": [
+        "/documentation/doccinlinecontentlink/doccinlinecontentlink"
+      ],
+      "traits": [
+        {
+          "interfaceLanguage": "swift"
+        }
+      ]
+    }
+  ],
+  "identifier": {
+    "url": "doc://DocCInlineContentLink/documentation/DocCInlineContentLink/DocCInlineContentLink",
+    "interfaceLanguage": "swift"
+  },
+  "abstract": [
+    {
+      "type": "text",
+      "text": "Sample documentation"
+    }
+  ],
+  "kind": "symbol",
+  "metadata": {
+    "fragments": [
+      {
+        "kind": "keyword",
+        "text": "struct"
+      },
+      {
+        "kind": "text",
+        "text": " "
+      },
+      {
+        "kind": "identifier",
+        "text": "DocCInlineContentLink"
+      }
+    ],
+    "title": "DocCInlineContentLink",
+    "roleHeading": "Structure",
+    "role": "symbol",
+    "symbolKind": "struct",
+    "externalID": "s:21DocCInlineContentLinkAAV",
+    "modules": [
+      {
+        "name": "DocCInlineContentLink"
+      }
+    ],
+    "navigatorTitle": [
+      {
+        "kind": "identifier",
+        "text": "DocCInlineContentLink"
+      }
+    ]
+  },
+  "hierarchy": {
+    "paths": [
+      [
+        "doc://DocCInlineContentLink/documentation/DocCInlineContentLink"
+      ]
+    ]
+  },
+  "topicSections": [
+    {
+      "title": "Initializers",
+      "identifiers": [
+        "doc://DocCInlineContentLink/documentation/DocCInlineContentLink/DocCInlineContentLink/init()"
+      ]
+    },
+    {
+      "title": "Instance Properties",
+      "identifiers": [
+        "doc://DocCInlineContentLink/documentation/DocCInlineContentLink/DocCInlineContentLink/text"
+      ]
+    }
+  ],
+  "references": {
+    "doc://DocCInlineContentLink/documentation/DocCInlineContentLink/DocCInlineContentLink/text": {
+      "role": "symbol",
+      "title": "text",
+      "fragments": [
+        {
+          "kind": "keyword",
+          "text": "var"
+        },
+        {
+          "kind": "text",
+          "text": " "
+        },
+        {
+          "kind": "identifier",
+          "text": "text"
+        },
+        {
+          "kind": "text",
+          "text": ": "
+        },
+        {
+          "kind": "typeIdentifier",
+          "text": "String",
+          "preciseIdentifier": "s:SS"
+        }
+      ],
+      "abstract": [],
+      "identifier": "doc://DocCInlineContentLink/documentation/DocCInlineContentLink/DocCInlineContentLink/text",
+      "kind": "symbol",
+      "type": "topic",
+      "url": "/documentation/doccinlinecontentlink/doccinlinecontentlink/text"
+    },
+    "doc://DocCInlineContentLink/documentation/DocCInlineContentLink": {
+      "role": "collection",
+      "title": "DocCInlineContentLink",
+      "abstract": [],
+      "identifier": "doc://DocCInlineContentLink/documentation/DocCInlineContentLink",
+      "kind": "symbol",
+      "type": "topic",
+      "url": "/documentation/doccinlinecontentlink"
+    },
+    "doc://DocCInlineContentLink/documentation/DocCInlineContentLink/DocCInlineContentLink/init()": {
+      "role": "symbol",
+      "title": "init()",
+      "fragments": [
+        {
+          "kind": "identifier",
+          "text": "init"
+        },
+        {
+          "kind": "text",
+          "text": "()"
+        }
+      ],
+      "abstract": [],
+      "identifier": "doc://DocCInlineContentLink/documentation/DocCInlineContentLink/DocCInlineContentLink/init()",
+      "kind": "symbol",
+      "type": "topic",
+      "url": "/documentation/doccinlinecontentlink/doccinlinecontentlink/init()"
+    },
+    "doc://DocCInlineContentLink/documentation/DocCInlineContentLink/DocCInlineContentLink": {
+      "role": "symbol",
+      "title": "DocCInlineContentLink",
+      "fragments": [
+        {
+          "kind": "keyword",
+          "text": "struct"
+        },
+        {
+          "kind": "text",
+          "text": " "
+        },
+        {
+          "kind": "identifier",
+          "text": "DocCInlineContentLink"
+        }
+      ],
+      "abstract": [
+        {
+          "type": "text",
+          "text": "Sample documentation"
+        }
+      ],
+      "identifier": "doc://DocCInlineContentLink/documentation/DocCInlineContentLink/DocCInlineContentLink",
+      "kind": "symbol",
+      "type": "topic",
+      "navigatorTitle": [
+        {
+          "kind": "identifier",
+          "text": "DocCInlineContentLink"
+        }
+      ],
+      "url": "/documentation/doccinlinecontentlink/doccinlinecontentlink"
+    },
+    "https://github.com": {
+      "title": "external url",
+      "titleInlineContent": [
+        {
+          "type": "text",
+          "text": "external url"
+        }
+      ],
+      "type": "link",
+      "identifier": "https://github.com",
+      "url": "https://github.com"
+    }
+  }
+}
