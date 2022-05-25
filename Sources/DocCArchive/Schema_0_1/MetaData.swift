@@ -86,6 +86,7 @@ extension DocCArchive.DocCSchema_0_1 {
     case typeProperty     = "Type Property"
     case `typealias`      = "Type Alias"
     case `class`          = "Class"
+    case application      = "Application"
 
     public var description: String { return "<RoleHeading: \(rawValue)>" }
   }
