@@ -20,8 +20,39 @@ final class DocumentDecodingTests: XCTestCase {
     ( "testIssue11FailUnorderedList"     , testIssue11FailUnorderedList     ),
     ( "testAllDataJSONInSlothCreator"    , testAllDataJSONInSlothCreator    ),
     ( "testIssue12FailAsideWarningStyle" , testIssue12FailAsideWarningStyle ),
-    ( "testTableIssue6"                  , testTableIssue6 )
+    ( "testTableIssue6"                  , testTableIssue6                  ),
+    ( "testIssue20FailRoleHeadingApp"    , testIssue20FailRoleHeadingApp    )
   ]
+
+  
+  func testIssue20FailRoleHeadingApp() throws {
+    let url  = Fixtures.baseURL.appendingPathComponent("Issue20Fail.json")
+    let data = try Data(contentsOf: url)
+
+    let document : DocCArchive.Document
+
+    print("Decoding:", url.path)
+    do {
+      document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+    }
+    catch {
+      print("ERROR:", error)
+      XCTFail("failed to decode: \(error)")
+      return
+    }
+
+    // v0.2.0 as declared
+    XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 2, patch: 0))
+
+    XCTAssertEqual(document.primaryContentSections?.count ?? 0, 0,
+                   "Didn't expect sections?")
+    
+    XCTAssertEqual(document.topicSections?.count, 2,
+                   "Missing topic sections")
+    
+    XCTAssertEqual(document.metadata.roleHeading, .application,
+                   "Expected application role heading!")
+  }
 
   func testLinkInlineContentIssue7() throws {
     let url  = Fixtures.baseURL.appendingPathComponent("LinkInlineContentIssue7.json")
