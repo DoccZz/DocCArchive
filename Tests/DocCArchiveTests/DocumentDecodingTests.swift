@@ -50,8 +50,37 @@ final class DocumentDecodingTests: XCTestCase {
     XCTAssertEqual(document.topicSections?.count, 2,
                    "Missing topic sections")
     
-    XCTAssertEqual(document.metadata.roleHeading, .application,
+    XCTAssertEqual(document.metadata.roleHeading, .known(.application),
                    "Expected application role heading!")
+  }
+
+  func testCustomRoleHeading() throws {
+    let url  = Fixtures.baseURL.appendingPathComponent("CustomRoleHeading.json")
+    let data = try Data(contentsOf: url)
+
+    let document : DocCArchive.Document
+
+    print("Decoding:", url.path)
+    do {
+      document = try JSONDecoder().decode(DocCArchive.Document.self, from: data)
+    }
+    catch {
+      print("ERROR:", error)
+      XCTFail("failed to decode: \(error)")
+      return
+    }
+
+    // v0.2.0 as declared
+    XCTAssertEqual(document.schemaVersion, .init(major: 0, minor: 2, patch: 0))
+
+    XCTAssertEqual(document.primaryContentSections?.count ?? 0, 0,
+                   "Didn't expect sections?")
+
+    XCTAssertEqual(document.topicSections?.count, 2,
+                   "Missing topic sections")
+
+    XCTAssertEqual(document.metadata.roleHeading, .custom("My Custom Role Heading"),
+                   "Expected custom role heading!")
   }
 
   func testLinkInlineContentIssue7() throws {
