@@ -14,7 +14,7 @@ extension DocCArchive.DocCSchema_0_1 {
     
     // Looks like Kind & Role are the same? - I think they scope differently
     public enum Kind: String, Codable {
-      case symbol, article, overview, project
+      case symbol, article, overview, project, section
     }
     
     // Samples:
