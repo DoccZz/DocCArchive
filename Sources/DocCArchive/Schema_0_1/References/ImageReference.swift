@@ -23,7 +23,7 @@ extension DocCArchive.DocCSchema_0_1 {
     public struct Variant: Equatable, Codable, CustomStringConvertible {
       
       public enum Trait: String, Codable {
-        case nonRetina = "1x", retina = "2x", light, dark
+        case nonRetina = "1x", retina = "2x", threeX = "3x", light, dark
       }
       
       public var url    : String // it's a path, not a URL

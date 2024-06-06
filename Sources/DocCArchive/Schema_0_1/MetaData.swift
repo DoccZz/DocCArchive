@@ -70,26 +70,55 @@ extension DocCArchive.DocCSchema_0_1 {
     public var description: String { return rawValue }
   }
   
-  public enum RoleHeading: String, Codable, CustomStringConvertible {
+  public enum RoleHeading: Codable, CustomStringConvertible, Equatable {
     // or just a plain string?
-    case structure        = "Structure"
-    case framework        = "Framework"
-    case instanceMethod   = "Instance Method"
-    case typeMethod       = "Type Method"
-    case initializer      = "Initializer"
-    case instanceProperty = "Instance Property"
-    case enumeration      = "Enumeration"
-    case `case`           = "Case"
-    case `operator`       = "Operator"
-    case article          = "Article"
-    case `protocol`       = "Protocol"
-    case typeProperty     = "Type Property"
-    case `typealias`      = "Type Alias"
-    case `class`          = "Class"
-    case application      = "Application"
-    case function         = "Function"
+    public enum Known: String, Codable {
+      case structure        = "Structure"
+      case framework        = "Framework"
+      case instanceMethod   = "Instance Method"
+      case typeMethod       = "Type Method"
+      case initializer      = "Initializer"
+      case instanceProperty = "Instance Property"
+      case enumeration      = "Enumeration"
+      case `case`           = "Case"
+      case `operator`       = "Operator"
+      case article          = "Article"
+      case `protocol`       = "Protocol"
+      case typeProperty     = "Type Property"
+      case `typealias`      = "Type Alias"
+      case `class`          = "Class"
+      case application      = "Application"
+      case function         = "Function"
+    }
+
+    case known(Known)
+    case custom(String)
+
+    var rawValue: String {
+      switch self {
+      case let .known(value):
+        return value.rawValue
+      case let .custom(value):
+        return value
+      }
+    }
 
     public var description: String { return "<RoleHeading: \(rawValue)>" }
+
+    public init(from decoder: Decoder) throws {
+      let container = try decoder.singleValueContainer()
+      let key = try container.decode(String.self)
+      if let value = Known(rawValue: key) {
+        self = .known(value)
+      } else {
+        self = .custom(key)
+      }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+      var container = encoder.singleValueContainer()
+      try container.encode(self.rawValue)
+    }
   }
 
   public struct Module: Equatable, Codable, CustomStringConvertible {
@@ -100,7 +129,7 @@ extension DocCArchive.DocCSchema_0_1 {
 
   public struct MetaData: Equatable, Codable, CustomStringConvertible {
     
-    public var role                  : Role
+    public var role                  : Role?
     public var roleHeading           : RoleHeading? // not in tutorial
     public var title                 : String
     public var externalID            : String?
@@ -113,7 +142,9 @@ extension DocCArchive.DocCSchema_0_1 {
 
     public var description: String {
       var ms = "<Meta:"
-      ms += " \(role)"
+      if let role {
+        ms += " \(role)"
+      }
       if let s = roleHeading    { ms += "(“\(s.rawValue)”)"          }
       if !title.isEmpty         { ms += " “\(title)”"                }
       if let s = externalID     { ms += " extid=\(s)"                }
@@ -157,18 +188,19 @@ extension DocCArchive.DocCSchema_0_1 {
         try container.decodeIfPresent(String.self,
                                       forKey: .categoryPathComponent)
 
-      let role = try container.decode(String.self, forKey: .role)
-      switch role {
-        case "symbol":
-          let kind = try container.decode(SymbolKind.self, forKey: .symbolKind)
-          self.role = .symbol(kind)
-        case "overview"        : self.role = .overview
-        case "collection"      : self.role = .collection
-        case "collectionGroup" : self.role = .collectionGroup
-        case "article"         : self.role = .article
-        case "project"         : self.role = .project
-        default:
-          throw DocCArchiveLoadingError.unsupportedMetaDataRole(role)
+      if let role = try container.decodeIfPresent(String.self, forKey: .role) {
+        switch role {
+          case "symbol":
+            let kind = try container.decode(SymbolKind.self, forKey: .symbolKind)
+            self.role = .symbol(kind)
+          case "overview"        : self.role = .overview
+          case "collection"      : self.role = .collection
+          case "collectionGroup" : self.role = .collectionGroup
+          case "article"         : self.role = .article
+          case "project"         : self.role = .project
+          default:
+            throw DocCArchiveLoadingError.unsupportedMetaDataRole(role)
+        }
       }
       
       fragments = try container.decodeIfPresent(Block.self, forKey: .fragments)
@@ -194,17 +226,19 @@ extension DocCArchive.DocCSchema_0_1 {
       try container.encode(categoryPathComponent,
                            forKey: .categoryPathComponent)
 
-      switch role { // TODO: move to Role type (singlevaluecontainer)
-        case .symbol(let kind):
-          try container.encode("symbol" , forKey: .role)
-          try container.encode(kind     , forKey: .symbolKind)
-        case .pseudoSymbol : try container.encode("pseudoSymbol", forKey: .role)
-        case .overview     : try container.encode("overview"    , forKey: .role)
-        case .article      : try container.encode("article"     , forKey: .role)
-        case .project      : try container.encode("project"     , forKey: .role)
-        case .collection   : try container.encode("collection"  , forKey: .role)
-        case .collectionGroup:
-          try container.encode("collectionGroup", forKey: .role)
+      if let role {
+        switch role { // TODO: move to Role type (singlevaluecontainer)
+          case .symbol(let kind):
+            try container.encode("symbol" , forKey: .role)
+            try container.encode(kind     , forKey: .symbolKind)
+          case .pseudoSymbol : try container.encode("pseudoSymbol", forKey: .role)
+          case .overview     : try container.encode("overview"    , forKey: .role)
+          case .article      : try container.encode("article"     , forKey: .role)
+          case .project      : try container.encode("project"     , forKey: .role)
+          case .collection   : try container.encode("collection"  , forKey: .role)
+          case .collectionGroup:
+            try container.encode("collectionGroup", forKey: .role)
+        }
       }
       
       if !fragments.isEmpty {

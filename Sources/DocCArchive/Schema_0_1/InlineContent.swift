@@ -18,18 +18,20 @@ extension DocCArchive.DocCSchema_0_1 {
                    overridingTitleInlineContent : [ InlineContent ]?)
     case image    (identifier: String)
     case emphasis ([ InlineContent ])
+    case strikethrough   ([ InlineContent ])
     case strong   ([ InlineContent ])
     case codeVoice(code: String)
     
     public var description: String {
       switch self {
-        case .text     (let s)       :  return "“\(s)”"
+        case .text          (let s)       :  return "“\(s)”"
         case .reference(let id, let isActive, _, _):
           return "\(id)\(isActive ? "" : "-inactive")"
-        case .image    (let id)      : return "<img \(id)>"
-        case .emphasis (let content) : return "*\(content)*"
-        case .strong   (let content) : return "**\(content)**"
-        case .codeVoice(let code)    : return "`\(code)`"
+        case .image         (let id)      : return "<img \(id)>"
+        case .emphasis      (let content) : return "*\(content)*"
+        case .strikethrough (let content) : return "~~\(content)~~"
+        case .strong        (let content) : return "**\(content)**"
+        case .codeVoice     (let code)    : return "`\(code)`"
       }
     }
 
@@ -84,24 +86,27 @@ extension DocCArchive.DocCSchema_0_1 {
       
       switch self {
         case .text(let text):
-          try container.encode("text"      , forKey: .type)
-          try container.encode(text        , forKey: .text)
+          try container.encode("text"         , forKey: .type)
+          try container.encode(text           , forKey: .text)
         case .codeVoice(let code):
-          try container.encode("codeVoice" , forKey: .type)
-          try container.encode(code        , forKey: .code)
+          try container.encode("codeVoice"    , forKey: .type)
+          try container.encode(code           , forKey: .code)
         case .image(let identifier):
-          try container.encode("image"     , forKey: .type)
-          try container.encode(identifier  , forKey: .identifier)
+          try container.encode("image"        , forKey: .type)
+          try container.encode(identifier     , forKey: .identifier)
         case .emphasis(let content):
-          try container.encode("emphasis"  , forKey: .type)
-          try container.encode(content     , forKey: .inlineContent)
+          try container.encode("emphasis"     , forKey: .type)
+          try container.encode(content        , forKey: .inlineContent)
+        case .strikethrough(let content):
+          try container.encode("strikethrough", forKey: .type)
+          try container.encode(content        , forKey: .inlineContent)
         case .strong(let content):
-          try container.encode("strong"    , forKey: .type)
-          try container.encode(content     , forKey: .inlineContent)
+          try container.encode("strong"       , forKey: .type)
+          try container.encode(content        , forKey: .inlineContent)
         case .reference(let identifier, let isActive, let ot, let otc):
-          try container.encode("reference" , forKey: .type)
-          try container.encode(identifier  , forKey: .identifier)
-          try container.encode(isActive    , forKey: .isActive)
+          try container.encode("reference"    , forKey: .type)
+          try container.encode(identifier     , forKey: .identifier)
+          try container.encode(isActive       , forKey: .isActive)
           if let v = ot  { try container.encode(v , forKey: .overridingTitle) }
           if let v = otc {
             try container.encode(v, forKey: .overridingTitleInlineContent)
