@@ -50,7 +50,7 @@ extension DocCArchive.DocCSchema_0_1 {
     }
     
     public var identifier : String
-    public var alt        : String
+    public var alt        : String?
     public var variants   : [ Variant ]
 
     public func bestVariant(for traits: Set<Variant.Trait>) -> Variant? {
@@ -73,8 +73,8 @@ extension DocCArchive.DocCSchema_0_1 {
 
     public var description: String {
       var ms = "<ImageRef[\(identifier)]: "
-      if !alt.isEmpty { ms += " “\(alt)”" }
-      
+      if let alt = alt, !alt.isEmpty { ms += " “\(alt)”" }
+
       if      variants.isEmpty    { ms += " no-variants"                 }
       else if variants.count == 1 { ms += " \(variants[0])"              }
       else                        { ms += " #variants=\(variants.count)" }
