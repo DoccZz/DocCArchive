@@ -70,7 +70,9 @@ extension DocCArchive.DocCSchema_0_1 {
     public var description: String { return rawValue }
   }
   
-  public enum RoleHeading: Codable, CustomStringConvertible, Equatable {
+  public enum RoleHeading: Codable, CustomStringConvertible, Equatable,
+                           RawRepresentable
+  {
     // or just a plain string?
     public enum Known: String, Codable {
       case structure        = "Structure"
@@ -93,13 +95,17 @@ extension DocCArchive.DocCSchema_0_1 {
 
     case known(Known)
     case custom(String)
+    
+    public init(rawValue: String) {
+      if let known = Known(rawValue: rawValue) { self = .known(known) }
+      else { self = .custom(rawValue) }
+    }
 
-    var rawValue: String {
+    @inlinable
+    public var rawValue: String {
       switch self {
-      case let .known(value):
-        return value.rawValue
-      case let .custom(value):
-        return value
+        case let .known (value) : return value.rawValue
+        case let .custom(value) : return value
       }
     }
 
@@ -108,11 +114,7 @@ extension DocCArchive.DocCSchema_0_1 {
     public init(from decoder: Decoder) throws {
       let container = try decoder.singleValueContainer()
       let key = try container.decode(String.self)
-      if let value = Known(rawValue: key) {
-        self = .known(value)
-      } else {
-        self = .custom(key)
-      }
+      self = .init(rawValue: key)
     }
 
     public func encode(to encoder: Encoder) throws {
