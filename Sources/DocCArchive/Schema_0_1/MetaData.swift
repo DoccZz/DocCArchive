@@ -144,7 +144,7 @@ extension DocCArchive.DocCSchema_0_1 {
 
     public var description: String {
       var ms = "<Meta:"
-      if let role {
+      if let role = role {
         ms += " \(role)"
       }
       if let s = roleHeading    { ms += "(“\(s.rawValue)”)"          }
@@ -228,7 +228,7 @@ extension DocCArchive.DocCSchema_0_1 {
       try container.encode(categoryPathComponent,
                            forKey: .categoryPathComponent)
 
-      if let role {
+      if let role = role {
         switch role { // TODO: move to Role type (singlevaluecontainer)
           case .symbol(let kind):
             try container.encode("symbol" , forKey: .role)
